@@ -28,6 +28,7 @@ class CameraController {
         this.focusButton.addEventListener('click', () => this.triggerFocus());
         window.addEventListener('resize', () => this.adjustOverlaySize());
         this.videoElement.onloadedmetadata = () => this.adjustOverlaySize();
+        this.overlay.style.display = 'none';
     }
 
     handleButtonClick(e) {
@@ -58,7 +59,9 @@ class CameraController {
     }
 
     async startCamera() {
+        this.overlay.style.display = 'block';
         try {
+            
             this.stream = await navigator.mediaDevices.getUserMedia({ video: true });
             this.videoElement.srcObject = this.stream;
             this.state = 'started';
@@ -82,6 +85,7 @@ class CameraController {
         this.resetFlashButton(); // Kamera durdurulunca flaş butonunu sıfırla
         this.resetFocusButton(); // Kamera durdurulunca fokus butonunu sıfırla
         this.showNotificationBanner();
+        this.overlay.style.display = 'none';
     }
 
     updateButtonText() {
