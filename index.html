@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Kamera</title>
+</head>
+<body>
+    <div class="container">
+        <div id="notificationBanner">TC Kimlik Verisi Bulundu!</div>
+        <div class="video-container">
+            <video id="camera" autoplay playsinline></video>
+            <div class="zoom-container">
+                <div class="camera-zoom-buttons">
+                    <div id="zoom-in" class="zoom-in-button"></div>
+                    <div id="zoom-out" class="zoom-out-button"></div>
+                </div>
+            </div>
+
+            <!-- Focus ve Flash Butonları -->
+            <button id="focus-button" class="camera-action-button focus-button">
+                <i class="fa-solid fa-bullseye"></i>
+            </button>
+            <button id="flash-button" class="camera-action-button flash-button">
+                <i class="fa-solid fa-bolt"></i>
+            </button>
+        </div>
+
+        <div class="overlay" id="overlay">
+            <div class="after-before"></div>
+        </div>
+
+        <div class="button-container">
+            <button id="cameraButton" class="cameraButton"></button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

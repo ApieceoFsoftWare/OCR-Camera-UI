@@ -1,0 +1,352 @@
+:root {
+    --primary-color: #4c63af;
+    --secondary-color: #F44336;
+    --dark-background-color: #333;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Temel stil ayarları */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden; /* Dikey kaydırmayı tamamen engeller */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
+
+.container {
+    width: 100%;
+    height: 100dvh; /* Yeni dinamik viewport yüksekliği birimi */
+    margin-top: 0; /* Olabildiğince sıfırdan başla */
+    background: black;
+}
+
+.video-container {
+    width: 100%;
+    height: 87dvh;
+    display: block;
+    position: relative;
+    line-height: 0;
+    overflow: hidden;
+    border: none;
+    border-bottom-left-radius: 20px; /* Aynı radius değeri */
+    border-bottom-right-radius: 20px;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ekranı tam kaplayacak şekilde videoyu ölçeklendirir */
+    display: block;
+    max-height: 100%;
+    border: none;
+}
+
+.video-blur {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0 0 0 / 70%); /* Füme renkte yarı saydam arka plan */
+    z-index: 1;
+}
+
+.button-container {
+    width: 100%;
+    height: 13vh;
+    display: block;
+}
+
+.cameraButton {
+    width: 100%;
+    height: 100%;
+    color: white;
+    position: relative;
+    overflow: hidden; /* Ripple efektinin taşmasını engeller */
+    color: white;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border: none;
+    padding: 15px 30px;
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s ease;
+
+    @media(max-width: 767px) {
+        font-size: 30px;
+    }
+
+    @media(max-width:500px) {
+        font-size: 18px;
+    }
+}
+
+    .cameraButton .ripple {
+        position: absolute;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.6);
+        transform: scale(0);
+        animation: rippleEffect 0.6s linear;
+        pointer-events: none; /* Ripple animasyonu üzerinde tıklamayı engeller */
+    }
+
+@keyframes rippleEffect {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+
+/* Overlay kodları */
+.overlay {
+    position: absolute;
+    top: 39%;
+    left: 50%;
+    width: 90%; /* Overlay genişliği */
+    height: 25%; /* Overlay yüksekliği */
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 3;
+    background-color: transparent;
+}
+
+    /* Köşelerde "L" şeklinde border */
+    .overlay::before,
+    .overlay::after {
+        content: '';
+        position: absolute;
+        width: 20px; /* Köşe genişliği */
+        height: 20px; /* Köşe yüksekliği */
+        background-color: transparent;
+        border: 3px solid var(--primary-color); /* Border rengi */
+        box-sizing: border-box;
+        border-radius: 3px;
+    }
+
+    .overlay::before {
+        top: -2px;
+        left: -2px;
+        border-right: none;
+        border-bottom: none;
+    }
+
+    .overlay::after {
+        bottom: -2px;
+        right: -2px;
+        border-left: none;
+        border-top: none;
+    }
+
+    /* Overlay içindeki div için köşe sınırları */
+    .overlay div::before,
+    .overlay div::after {
+        content: '';
+        position: absolute;
+        width: 20px; /* Köşe genişliği */
+        height: 20px; /* Köşe yüksekliği */
+        background-color: transparent;
+        border: 3px solid #4c63af; /* Border rengi */
+        box-sizing: border-box;
+        border-radius: 3px;
+    }
+
+    .overlay div::before {
+        top: -2px;
+        right: -2px;
+        border-left: none;
+        border-bottom: none;
+    }
+
+    .overlay div::after {
+        bottom: -2px;
+        left: -2px;
+        border-right: none;
+        border-top: none;
+    }
+
+.zoom-container {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    background-color: #333;
+    padding: 8px;
+    border-radius: 49px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+.camera-zoom-buttons {
+    display: flex;
+    flex-direction: row; /* Butonları yatay olarak hizalar */
+    gap: 20px; /* Butonlar arasındaki boşluk */
+}
+
+.zoom-in-button,
+.zoom-out-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #4c63af;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+    outline: none; /* Odaklandığında outline'ı kaldırır */
+}
+
+.zoom-out-button {
+    background-color: #F44336;
+}
+
+    .zoom-in-button:hover,
+    .zoom-out-button:hover {
+        background-color: #555;
+        transform: scale(1.1);
+    }
+
+    .zoom-in-button:active,
+    .zoom-out-button:active {
+        background-color: #333;
+        transform: scale(0.95);
+    }
+
+    .zoom-in-button::before,
+    .zoom-out-button::before {
+        content: '';
+        width: 20px;
+        height: 2px;
+        background-color: #fff;
+        position: relative;
+    }
+
+.zoom-in-button::before {
+    transform: rotate(90deg);
+}
+
+.zoom-in-button::after,
+.zoom-out-button::after {
+    content: '';
+    width: 20px;
+    height: 2px;
+    background-color: #fff;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.zoom-in-button::after {
+    transform: rotate(0deg);
+}
+
+.zoom-out-button::after {
+    transform: rotate(0deg);
+}
+
+/* Flash ve Focus Butonları için CSS */
+/* Flash ve Focus Butonları için CSS */
+.camera-action-button {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    z-index: 5;
+}
+
+
+.focus-button {
+    background-color: #333; /* Buton rengi */
+    right: 10px;
+    bottom: 10px;
+    border: none;
+}
+
+.flash-button {
+    background-color: #333; /* Buton rengi */
+    left: 10px;
+    bottom: 10px;
+    border: none;
+}
+
+    .flash-button.active {
+        background-color: yellow; /* Flaş aktifken buton sarı */
+    }
+
+        .flash-button.active i {
+            color: black; /* Flaş aktifken ikon siyah */
+            text-shadow: 0 0 10px yellow; /* İkona sarı bir parıltı ekle */
+        }
+
+        .flash-button.active::after {
+            content: '';
+            position: absolute;
+            width: calc(100%);
+            height: calc(100%);
+            border-radius: 50%;
+            box-shadow: 0 0 20px yellow; /* Sarı bir parıltı efekti */
+        }
+
+
+.focus-button i {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.focus-button.active {
+    background-color: #555; /* Focus aktifken buton koyu gri */
+}
+
+    .focus-button.active i {
+        color: white; /* İkon daha beyaz */
+        transform: scale(1.2); /* İkon biraz büyür */
+        transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+#notificationBanner {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    z-index: 9999;
+    transition: top 1s ease;
+}
+
+
+.notification-in {
+    top: 0 !important; /* Banner'ı aşağı indirir */
+}
+    
