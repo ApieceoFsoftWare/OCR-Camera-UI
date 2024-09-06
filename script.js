@@ -8,6 +8,8 @@ class CameraController {
         this.videoContainer.appendChild(this.videoBlur);
         this.stream = null;
         this.state = 'initial';
+        this.infoHeader = document.getElementById('infoHeader');
+        this.infoContext = document.getElementById('infoContext');
         this.cameraButton = document.getElementById('cameraButton');
         this.flashButton = document.getElementById('flash-button');
         this.focusButton = document.getElementById('focus-button');
@@ -16,6 +18,10 @@ class CameraController {
         this.flashState = false; // Flaşın başlangıç durumu kapalı
         this.notificationBanner = document.getElementById('notificationBanner');
 
+        // Zoom butonları
+        this.zoomInButton = document.getElementById('zoom-in');
+        this.zoomOutButton = document.getElementById('zoom-out');
+
 
         this.initialize();
     }
@@ -23,6 +29,7 @@ class CameraController {
     initialize() {
         this.updateButtonText();
         this.updateButtonStates(); // Butonları başlangıç durumuna göre ayarla
+        this.zoomButtonsDisabled();
         this.cameraButton.addEventListener('click', (e) => this.handleButtonClick(e));
         this.flashButton.addEventListener('click', () => this.toggleFlash());
         this.focusButton.addEventListener('click', () => this.triggerFocus());
@@ -60,6 +67,7 @@ class CameraController {
 
     async startCamera() {
         this.overlay.style.display = 'block';
+        this.zoomButtonsEnabled();
         try {
             
             this.stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -84,8 +92,9 @@ class CameraController {
         this.updateButtonStates(); // Kamera durduğunda butonları devre dışı bırak
         this.resetFlashButton(); // Kamera durdurulunca flaş butonunu sıfırla
         this.resetFocusButton(); // Kamera durdurulunca fokus butonunu sıfırla
-        this.showNotificationBanner();
+        this.showNotificationBanner("12345678902");
         this.overlay.style.display = 'none';
+        this.zoomButtonsDisabled();
     }
 
     updateButtonText() {
@@ -179,15 +188,24 @@ class CameraController {
         this.focusButton.classList.remove('active'); // Focus butonunu sıfırla
     }
 
-    showNotificationBanner() {
+    showNotificationBanner(text_) {
         console.log('Banner tetiklendi'); // Fonksiyonun çalışıp çalışmadığını kontrol edin
         this.notificationBanner.classList.add('notification-in');
-        
+        this.notificationBanner.innerHTML = 'T.C. Kimlik Bulundu!<br>' + text_;
         setTimeout(() => {
             this.notificationBanner.classList.remove('notification-in');
         }, 2000);
     }
     
+    zoomButtonsEnabled(){
+        this.zoomInButton.classList.remove('disabled');
+        this.zoomOutButton.classList.remove('disabled'); 
+    }
+
+    zoomButtonsDisabled(){
+        this.zoomInButton.classList.add('disabled');
+        this.zoomOutButton.classList.add('disabled');
+    }
     
 
 }
